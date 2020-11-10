@@ -12,8 +12,8 @@ type message struct {
 }
 
 // Add a method to your new struct -
-func (m *message) UpperCaseIt() string {
-	return strings.ToUpper(*m.text)
+func (m message) UpperCaseIt() string {
+	return strings.ToLower(*m.text)
 }
 
 func main() {
@@ -33,6 +33,9 @@ func main() {
 // Pointers in go, what are they and how do we use them?
 // What is the difference between a function and a method in Go and
 // why would you choose one over the other?
+
+// Bonus:
+// Reference types in Go https://dave.cheney.net/2017/04/29/there-is-no-pass-by-reference-in-go
 
 // Exercise 5 Minutes:
 // Using the string package documentation at pkg.go.dev change the

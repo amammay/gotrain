@@ -11,12 +11,12 @@ import (
 )
 
 func main() {
-
+	//done := make(chan bool)
 	// handle the request to a route
 	http.HandleFunc("/ascii/", asciiHandler)
 	// catchall default route
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("up"))
+		w.Write([]byte("up")) // What about err this do we not care?
 		return
 	})
 
@@ -32,7 +32,8 @@ func main() {
 	// If we wanted we could listen on 2 or more ports at the same time.
 	// go http.ListenAndServe(":8081", nil)
 
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", nil) // Handle this error
+
 }
 
 // This function handles http request for the json file
@@ -56,7 +57,9 @@ func asciiHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	result, err := data.MarshalJSON()
 	if err != nil {
-		w.Write([]byte(err.Error()))
+		http.Error(w,"Internal Server", http.StatusInternalServerError)
+		log.Println(err.Error())
+		//w.Write([]byte(err.Error()))
 		return
 	}
 
@@ -64,7 +67,7 @@ func asciiHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	// write the body
-	w.Write(result)
+	w.Write(result) // 
 	return
 }
 
@@ -85,3 +88,10 @@ func checkhttp() {
 	}
 
 }
+
+// Exercise 10 minutes:
+// What are the problems with this code? Swallowed error etc...?
+
+// Bonus: The golang built in http lib is extremely robust but, over the years, many
+// external helper libs have been created. gorilla mux is a good example. Any
+// why this happen? How do you go about evaluating external open source libs?
